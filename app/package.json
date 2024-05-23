@@ -1,6 +1,10 @@
 {
   "scripts": {
-    "execute": "ts-node index.ts"
+    "receive": "ts-node ./src/receive.ts",
+    "inventory": "ts-node ./src/inventory.ts",
+    "movement": "ts-node ./src/movement.ts",
+    "expend": "ts-node ./src/expend.ts",
+    "shipment": "ts-node ./src/shipment.ts"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
