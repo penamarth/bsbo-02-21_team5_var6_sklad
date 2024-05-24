@@ -1,5 +1,7 @@
-import { Item } from './Item'
+import { Log } from "../services/logger"
+import { Item } from "./Item"
 
+@Log()
 export class InvoiceLineItem {
   quantity: number
   item: Item
