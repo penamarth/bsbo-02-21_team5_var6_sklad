@@ -1,9 +1,9 @@
-import { InventoryStatus } from './Enums'
+import { EInventoryStatus } from './Enums'
 
 export class Inventory {
   id: string
   private InventoryList: any[] = []
-  status: InventoryStatus = InventoryStatus.Open
+  status: EInventoryStatus = EInventoryStatus.Open
 
   constructor(id: string) {
     this.id = id
@@ -14,15 +14,11 @@ export class Inventory {
     // Logic to prepare inventory list
   }
 
-  setStatus(status: InventoryStatus): void {
+  setStatus(status: EInventoryStatus): void {
     this.status = status
   }
 
   showInventoryList(): any[] {
     return this.InventoryList
-  }
-
-  updateInventoryList(): void {
-    // Logic to update inventory list
   }
 }

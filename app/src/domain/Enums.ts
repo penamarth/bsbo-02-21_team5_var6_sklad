@@ -4,8 +4,17 @@ export enum EInvoiceStatus {
     Pending = 'Pending'
   }
   
-  export enum InventoryStatus {
+  export enum EInventoryStatus {
     Open = 'Open',
     Closed = 'Closed'
   }
   
+  export enum EMovementOrderStatus {
+    Open = 'Open',
+    Closed = 'Closed'
+  }
+
+  export enum EAssemblingStatus {
+    Open = 'Open',
+    Closed = 'Closed'
+  }
