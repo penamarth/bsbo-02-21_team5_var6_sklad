@@ -1,5 +1,7 @@
-import { StockItem } from './StockItem'
+import { Log } from "../services/logger"
+import { StockItem } from "./StockItem"
 
+@Log()
 export class Shelf {
   id: string
   shelf_id: string

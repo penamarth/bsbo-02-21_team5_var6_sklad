@@ -1,6 +1,7 @@
 import { InvoiceLineItem } from './InvoiceLineItem'
 import { EInvoiceStatus } from './Enums'
 import { Item } from "./Item"
+import { Log } from "../services/logger"
 
 export interface Invoice {
   id: string
@@ -13,6 +14,7 @@ export interface Invoice {
   getItem(article: string, serial_no: string): InvoiceLineItem | undefined
 }
 
+@Log()
 export class ExpenditureInvoice implements Invoice {
   id: string
   lineItems: InvoiceLineItem[]
@@ -44,6 +46,7 @@ export class ExpenditureInvoice implements Invoice {
   }
 }
 
+@Log()
 export class ReceiptInvoice implements Invoice {
   id: string
   lineItems: InvoiceLineItem[] = []

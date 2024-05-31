@@ -7,10 +7,11 @@ export function Log() {
 
       if (typeof originalMethod === "function") {
         target.prototype[methodName] = function (...args: any[]) {
-          console.log(
-            `Вызов метода ${className}.${methodName} с аргументами:`,
-            args
-          )
+          // console.log(
+          //   `Вызов метода ${className}.${methodName} с аргументами:`,
+          //   args
+          // )
+          console.log(`Вызов метода ${className}.${methodName}`)
           const result = originalMethod.apply(this, args)
           // console.log(
           //   `Результат работы метода ${className}.${methodName}:`,

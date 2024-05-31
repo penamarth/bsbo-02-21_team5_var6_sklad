@@ -1,5 +1,7 @@
-import { EInventoryStatus } from './Enums'
+import { Log } from "../services/logger"
+import { EInventoryStatus } from "./Enums"
 
+@Log()
 export class Inventory {
   id: string
   private InventoryList: any[] = []

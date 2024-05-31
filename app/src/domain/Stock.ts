@@ -5,8 +5,11 @@ import { EInvoiceStatus } from "./Enums"
 import { ExpenditureInvoice, Invoice } from "./Invoice"
 import { InvoiceLineItem } from "./InvoiceLineItem"
 import { Item } from "./Item"
+import { Section } from "./Section"
+import { Shelf } from "./Shelf"
 import { StockItem } from "./StockItem"
 import { Storekeeper } from "./Storekeeper"
+import { Zone } from "./Zone"
 
 @Log()
 export class Stock {
@@ -14,9 +17,10 @@ export class Stock {
   private assemblings: Assembling[]
   private stockItems: StockItem[]
   private assemblers: Assembler[]
+  private zone: Zone
 
   constructor() {
-    const item = new Item("0", "Item", "1234567890", "0987654321")
+    const item = new Item("0", "0", "0", "0")
     const invoiceLineItem = new InvoiceLineItem(1, item)
     const invoice = new ExpenditureInvoice("0", [invoiceLineItem])
     const assembling = new Assembling("0")
@@ -26,6 +30,9 @@ export class Stock {
     this.assemblings = [assembling]
     this.assemblers = [new Storekeeper("0", this)]
     this.stockItems = [stockItem]
+    const shelf = new Shelf("0", "0")
+    const section = new Section("0", "0", [shelf])
+    this.zone = new Zone("0", "0", [section])
   }
 
   private requestAssembling() {
@@ -73,6 +80,20 @@ export class Stock {
     })
     invoice.setStatus(EInvoiceStatus.Closed)
     this.requestAssembling()
+  }
+
+  openInvoice(id: string): Invoice {
+    const invoice = this.findInvoice(id)!
+    invoice.setStatus(EInvoiceStatus.Handling)
+    return invoice
+  }
+
+  confirmInvoiceItem(article: string, sn: string): void {
+    const invoice = this.invoices[0]
+    const invoiceItem = invoice.getItem(article, sn)!
+    const shelf = this.zone.getEmptyShelf()!
+    const stockItem = new StockItem("0", 1, invoiceItem.item)
+    shelf.stockItems.push(stockItem)
   }
 
   completeInvoice(id: string): void {
