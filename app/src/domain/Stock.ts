@@ -1,7 +1,8 @@
 import { Log } from "../services/logger"
 import { Assembler } from "./Assembler"
 import { Assembling } from "./Assembling"
-import { EInvoiceStatus } from "./Enums"
+import { EInventoryStatus, EInvoiceStatus } from "./Enums"
+import { FullInventoryStrategy, Inventory } from "./Inventory"
 import { ExpenditureInvoice, Invoice } from "./Invoice"
 import { InvoiceLineItem } from "./InvoiceLineItem"
 import { Item } from "./Item"
@@ -18,6 +19,7 @@ export class Stock {
   private stockItems: StockItem[]
   private assemblers: Assembler[]
   private zone: Zone
+  private inventory: Inventory
 
   constructor() {
     const item = new Item("0", "0", "0", "0")
@@ -33,6 +35,7 @@ export class Stock {
     const shelf = new Shelf("0", "0")
     const section = new Section("0", "0", [shelf])
     this.zone = new Zone("0", "0", [section])
+    this.inventory = new Inventory("0", new FullInventoryStrategy())
   }
 
   private requestAssembling() {
@@ -40,6 +43,8 @@ export class Stock {
       assembler.incomingAssembladge()
     })
   }
+
+  private prepareInventoryList() {}
 
   findItem(id: string): StockItem | undefined {
     return this.stockItems.find((item) => item.id === id)
@@ -104,8 +109,11 @@ export class Stock {
   }
 
   startInventory(id: string): void {
-    // Logic to start inventory
+    this.inventory.setStatus(EInventoryStatus.Open)
+    this.prepareInventoryList()
   }
+
+  scanItem(id: string): void {}
 
   finishInventory(id: string): void {
     // Logic to finish inventory

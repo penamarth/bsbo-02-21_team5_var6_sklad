@@ -7,7 +7,7 @@ export class Inventory {
   private InventoryList: any[] = []
   status: EInventoryStatus = EInventoryStatus.Open
 
-  constructor(id: string) {
+  constructor(id: string, private strategy: InventoryStrategy) {
     this.id = id
     this.prepareInventoryList()
   }
@@ -23,4 +23,18 @@ export class Inventory {
   showInventoryList(): any[] {
     return this.InventoryList
   }
+}
+
+export interface InventoryStrategy {
+  prepareInventoryList(): void
+}
+
+@Log()
+export class PartialInventoryStrategy implements InventoryStrategy {
+  prepareInventoryList(): void {}
+}
+
+@Log()
+export class FullInventoryStrategy implements InventoryStrategy {
+  prepareInventoryList(): void {}
 }
