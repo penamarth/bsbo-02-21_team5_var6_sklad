@@ -1,17 +1,17 @@
 import { Log } from "../services/logger"
 import { EInventoryStatus } from "./Enums"
+import { StockItem } from "./StockItem"
 
 @Log()
 export class Inventory {
   id: string
-  private InventoryList: any[] = []
+  private InventoryList: StockItem[] = []
   status: EInventoryStatus = EInventoryStatus.Open
   strategy: InventoryStrategy
 
   constructor(id: string, strategy: InventoryStrategy) {
     this.id = id
     this.strategy = strategy
-
   }
 
   setStatus(status: EInventoryStatus): void {
@@ -22,8 +22,13 @@ export class Inventory {
     return this.InventoryList
   }
 
-  execute(): void {
+  executeStrategy(): StockItem[] {
     this.strategy.prepareInventoryList()
+    return []
+  }
+
+  setStrategy(strategy: InventoryStrategy): void {
+    this.strategy = strategy
   }
 }
 

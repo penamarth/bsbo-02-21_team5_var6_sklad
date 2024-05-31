@@ -52,8 +52,6 @@ export class Stock {
     })
   }
 
-  private prepareInventoryList() {}
-
   private getMovementOrder(id: string): MovementOrder {
     return this.movementOrders[0]
   }
@@ -122,14 +120,12 @@ export class Stock {
     }
   }
 
-  startInventory(id: string): [] {
-    this.inventory.setStatus(EInventoryStatus.Open)
-    this.prepareInventoryList()
-    return []
-  }
-
-  preformInventory(): void {
-    this.inventory.execute()
+  startInventory(id: string): StockItem[] {
+    const inventory = this.inventory
+    inventory.setStatus(EInventoryStatus.Open)
+    inventory.setStrategy(new FullInventoryStrategy())
+    const list = this.inventory.executeStrategy()
+    return list
   }
 
   scanItem(id: string): void {
@@ -138,11 +134,11 @@ export class Stock {
 
   enterQuantity(id: string, quantity: number): void {
     this.stockItems[0].updateQuantity(id, quantity)
-    this.inventory.setStatus(EInventoryStatus.Closed)
-    this.updateInventoryList()
   }
 
-  finishInventory(id: string): void {}
+  finishInventory(id: string): void {
+    this.inventory.setStatus(EInventoryStatus.Closed)
+  }
 
   startAssembling(id: string): void {
     const assembling = this.assemblings[0]
