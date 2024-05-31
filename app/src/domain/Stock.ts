@@ -1,11 +1,17 @@
 import { Log } from "../services/logger"
 import { Assembler } from "./Assembler"
 import { Assembling } from "./Assembling"
-import { EAssemblingStatus, EInventoryStatus, EInvoiceStatus } from "./Enums"
+import {
+  EAssemblingStatus,
+  EInventoryStatus,
+  EInvoiceStatus,
+  EMovementOrderStatus,
+} from "./Enums"
 import { FullInventoryStrategy, Inventory } from "./Inventory"
 import { ExpenditureInvoice, Invoice } from "./Invoice"
 import { InvoiceLineItem } from "./InvoiceLineItem"
 import { Item } from "./Item"
+import { MovementOrder } from "./MovementOrder"
 import { Section } from "./Section"
 import { Shelf } from "./Shelf"
 import { StockItem } from "./StockItem"
@@ -20,6 +26,7 @@ export class Stock {
   private assemblers: Assembler[]
   private zone: Zone
   private inventory: Inventory
+  private movementOrders: MovementOrder[]
 
   constructor() {
     const item = new Item("0", "0", "0", "0")
@@ -36,6 +43,7 @@ export class Stock {
     const section = new Section("0", "0", [shelf])
     this.zone = new Zone("0", "0", [section])
     this.inventory = new Inventory("0", new FullInventoryStrategy())
+    this.movementOrders = [new MovementOrder(stockItem, shelf)]
   }
 
   private requestAssembling() {
@@ -45,6 +53,10 @@ export class Stock {
   }
 
   private prepareInventoryList() {}
+
+  private getMovementOrder(id: string): MovementOrder {
+    return this.movementOrders[0]
+  }
 
   findItem(id: string): StockItem | undefined {
     return this.stockItems.find((item) => item.id === id)
@@ -132,5 +144,17 @@ export class Stock {
 
   complemeAssembling(): void {
     this.assemblings[0].setStatus(EAssemblingStatus.Closed)
+  }
+
+  requestOrder(): [StockItem, Shelf] {
+    const order = this.getMovementOrder("0")
+    return [order.stockItem, order.shelf]
+  }
+
+  startMovementOrder(id: string): void {
+    const order = this.movementOrders[0]
+    order.setStatus(EMovementOrderStatus.Open)
+    order.stockItem.getLocation()
+    order.setStatus(EMovementOrderStatus.Closed)
   }
 }

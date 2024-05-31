@@ -18,4 +18,6 @@ export class StockItem {
       this.quantity = quantity
     }
   }
+
+  getLocation(): void {}
 }
