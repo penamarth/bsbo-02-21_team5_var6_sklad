@@ -6,14 +6,12 @@ export class Inventory {
   id: string
   private InventoryList: any[] = []
   status: EInventoryStatus = EInventoryStatus.Open
+  strategy: InventoryStrategy
 
-  constructor(id: string, private strategy: InventoryStrategy) {
+  constructor(id: string, strategy: InventoryStrategy) {
     this.id = id
-    this.prepareInventoryList()
-  }
+    this.strategy = strategy
 
-  prepareInventoryList(): void {
-    // Logic to prepare inventory list
   }
 
   setStatus(status: EInventoryStatus): void {
