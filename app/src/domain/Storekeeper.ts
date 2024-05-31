@@ -1,6 +1,9 @@
-import { Stock } from './Stock'
+import { Log } from "../services/logger"
+import { Assembler } from "./Assembler"
+import { Stock } from "./Stock"
 
-export class Storekeeper {
+@Log()
+export class Storekeeper implements Assembler {
   private id: string
   private stock: Stock
 
@@ -8,6 +11,8 @@ export class Storekeeper {
     this.id = id
     this.stock = stock
   }
+
+  incomingAssembladge(): void {}
 
   openInvoice(invoice_id: string): void {
     this.stock.postInvoice(invoice_id)

@@ -1,16 +1,20 @@
 import { Log } from "../services/logger"
+import { Assembler } from "./Assembler"
 import { Assembling } from "./Assembling"
 import { EInvoiceStatus } from "./Enums"
 import { ExpenditureInvoice, Invoice } from "./Invoice"
 import { InvoiceLineItem } from "./InvoiceLineItem"
 import { Item } from "./Item"
 import { StockItem } from "./StockItem"
+import { Storekeeper } from "./Storekeeper"
 
 @Log()
 export class Stock {
   private invoices: Invoice[]
   private assemblings: Assembling[]
   private stockItems: StockItem[]
+  private assemblers: Assembler[]
+
   constructor() {
     const item = new Item("0", "Item", "1234567890", "0987654321")
     const invoiceLineItem = new InvoiceLineItem(1, item)
@@ -20,7 +24,14 @@ export class Stock {
     assembling.addTarget(stockItem)
     this.invoices = [invoice]
     this.assemblings = [assembling]
+    this.assemblers = [new Storekeeper("0", this)]
     this.stockItems = [stockItem]
+  }
+
+  private requestAssembling() {
+    this.assemblers.forEach((assembler) => {
+      assembler.incomingAssembladge()
+    })
   }
 
   findItem(id: string): StockItem | undefined {
@@ -51,9 +62,6 @@ export class Stock {
           return true
         }
       })
-      if (!ok) {
-        return
-      }
     }
     invoice.setStatus(EInvoiceStatus.Handling)
     const newAssembling = new Assembling("1")
@@ -64,6 +72,7 @@ export class Stock {
       }
     })
     invoice.setStatus(EInvoiceStatus.Closed)
+    this.requestAssembling()
   }
 
   completeInvoice(id: string): void {

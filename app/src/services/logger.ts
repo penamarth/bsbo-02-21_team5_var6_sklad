@@ -12,10 +12,10 @@ export function Log() {
             args
           )
           const result = originalMethod.apply(this, args)
-          console.log(
-            `Результат работы метода ${className}.${methodName}:`,
-            result
-          )
+          // console.log(
+          //   `Результат работы метода ${className}.${methodName}:`,
+          //   result
+          // )
           return result
         }
       }
