@@ -58,6 +58,8 @@ export class Stock {
     return this.movementOrders[0]
   }
 
+  private updateInventoryList(): void {}
+
   findItem(id: string): StockItem | undefined {
     return this.stockItems.find((item) => item.id === id)
   }
@@ -120,16 +122,27 @@ export class Stock {
     }
   }
 
-  startInventory(id: string): void {
+  startInventory(id: string): [] {
     this.inventory.setStatus(EInventoryStatus.Open)
     this.prepareInventoryList()
+    return []
   }
 
-  scanItem(id: string): void {}
-
-  finishInventory(id: string): void {
-    // Logic to finish inventory
+  preformInventory(): void {
+    this.inventory.execute()
   }
+
+  scanItem(id: string): void {
+    this.stockItems[0].item.getItemData(id)
+  }
+
+  enterQuantity(id: string, quantity: number): void {
+    this.stockItems[0].updateQuantity(id, quantity)
+    this.inventory.setStatus(EInventoryStatus.Closed)
+    this.updateInventoryList()
+  }
+
+  finishInventory(id: string): void {}
 
   startAssembling(id: string): void {
     const assembling = this.assemblings[0]

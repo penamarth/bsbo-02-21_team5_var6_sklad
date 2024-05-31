@@ -23,6 +23,10 @@ export class Inventory {
   showInventoryList(): any[] {
     return this.InventoryList
   }
+
+  execute(): void {
+    this.strategy.prepareInventoryList()
+  }
 }
 
 export interface InventoryStrategy {
