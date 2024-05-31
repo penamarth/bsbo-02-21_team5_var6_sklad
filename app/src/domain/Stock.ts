@@ -56,8 +56,6 @@ export class Stock {
     return this.movementOrders[0]
   }
 
-  private updateInventoryList(): void {}
-
   findItem(id: string): StockItem | undefined {
     return this.stockItems.find((item) => item.id === id)
   }
