@@ -1,7 +1,7 @@
 import { Log } from "../services/logger"
 import { Assembler } from "./Assembler"
 import { Assembling } from "./Assembling"
-import { EInventoryStatus, EInvoiceStatus } from "./Enums"
+import { EAssemblingStatus, EInventoryStatus, EInvoiceStatus } from "./Enums"
 import { FullInventoryStrategy, Inventory } from "./Inventory"
 import { ExpenditureInvoice, Invoice } from "./Invoice"
 import { InvoiceLineItem } from "./InvoiceLineItem"
@@ -117,5 +117,20 @@ export class Stock {
 
   finishInventory(id: string): void {
     // Logic to finish inventory
+  }
+
+  startAssembling(id: string): void {
+    const assembling = this.assemblings[0]
+    assembling.setStatus(EAssemblingStatus.Open)
+    const items = assembling.getItems()
+    items.forEach((item) => {
+      this.zone.getLocation(item)
+    })
+  }
+
+  pickItem(id: string): void {}
+
+  complemeAssembling(): void {
+    this.assemblings[0].setStatus(EAssemblingStatus.Closed)
   }
 }

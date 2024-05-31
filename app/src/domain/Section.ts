@@ -1,5 +1,6 @@
 import { Log } from "../services/logger"
 import { Shelf } from "./Shelf"
+import { StockItem } from "./StockItem"
 
 @Log()
 export class Section {
@@ -15,5 +16,9 @@ export class Section {
 
   getEmptyShelf(): Shelf | undefined {
     return this.shelves.find((shelf) => shelf.isEmpty())
+  }
+
+  getLocation(item: StockItem): Shelf {
+    return this.shelves[0]
   }
 }

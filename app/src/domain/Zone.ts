@@ -1,6 +1,7 @@
 import { Log } from "../services/logger"
 import { Section } from "./Section"
 import { Shelf } from "./Shelf"
+import { StockItem } from "./StockItem"
 
 @Log()
 export class Zone {
@@ -22,5 +23,9 @@ export class Zone {
       }
     }
     return undefined
+  }
+
+  getLocation(item: StockItem): Section {
+    return this.sections[0]
   }
 }
